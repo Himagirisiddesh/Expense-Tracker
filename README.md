@@ -47,7 +47,7 @@ expense-tracker/
 
 **After Adding Expenses**
 
-![Expense List Screenshot](assets/screenshots/add-expense.png)
+![Expense List Screenshot](https://victorious-indigo-h7vfzzs4w5.edgeone.app/Screenshot%202025-10-22%20174116.png)
 
 
 
