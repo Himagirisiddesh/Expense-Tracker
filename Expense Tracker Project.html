@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker (₹)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 45%;
+            padding: 10px;
+            margin: 5px;
+        }
+        button {
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>💰 Expense Tracker</h2>
+        <input type="text" id="desc" placeholder="Expense Description">
+        <input type="number" id="amount" placeholder="Amount (₹)">
+        <button onclick="addExpense()">Add</button>
+        <h3>Total: ₹<span id="total">0</span></h3>
+        <ul id="expenseList"></ul>
+    </div>
+
+    <script>
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+        function updateTotal() {
+            let total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            document.getElementById("total").textContent = total.toFixed(2);
+        }
+
+        function renderExpenses() {
+            let expenseList = document.getElementById("expenseList");
+            expenseList.innerHTML = "";
+            expenses.forEach((expense, index) => {
+                let li = document.createElement("li");
+                li.textContent = `${expense.desc}: ₹${expense.amount.toFixed(2)}`;
+                
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "X";
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.onclick = function () {
+                    expenses.splice(index, 1);
+                    localStorage.setItem("expenses", JSON.stringify(expenses));
+                    renderExpenses();
+                    updateTotal();
+                };
+
+                li.appendChild(deleteBtn);
+                expenseList.appendChild(li);
+            });
+            updateTotal();
+        }
+
+        function addExpense() {
+            let desc = document.getElementById("desc").value.trim();
+            let amount = parseFloat(document.getElementById("amount").value);
+            if (!desc || isNaN(amount) || amount <= 0) return;
+
+            expenses.push({ desc, amount });
+            localStorage.setItem("expenses", JSON.stringify(expenses));
+            renderExpenses();
+            document.getElementById("desc").value = "";
+            document.getElementById("amount").value = "";
+        }
+
+        renderExpenses();
+    </script>
+</body>
+</html>
