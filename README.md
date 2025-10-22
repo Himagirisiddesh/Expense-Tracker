@@ -43,7 +43,7 @@ expense-tracker/
 
 **App Interface**
 
-![Expense Tracker Screenshot](https://drive.google.com/file/d/1TleIs1De5BJDv9oPJuhYUyXut2oXIELT/view?usp=sharing)
+![Expense Tracker Screenshot](https://misleading-green-6wmfljuk9a.edgeone.app/Screenshot%202025-10-22%20173140.png)
 
 **After Adding Expenses**
 
