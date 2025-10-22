@@ -41,11 +41,13 @@ expense-tracker/
 
 🖼️ Screenshots
 
-**App Interface**
+**1. App Interface**
 
 ![Expense Tracker Screenshot](https://misleading-green-6wmfljuk9a.edgeone.app/Screenshot%202025-10-22%20173140.png)
 
-**After Adding Expenses**
+
+
+**2. After Adding Expenses**
 
 ![Expense List Screenshot](https://victorious-indigo-h7vfzzs4w5.edgeone.app/Screenshot%202025-10-22%20174116.png)
 
