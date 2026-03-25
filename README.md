@@ -26,17 +26,11 @@ A modern and feature-rich **Expense Tracker Web Application** that helps users m
 expense-tracker-pro
 
 │── index.html
-
 │── Expense Tracker Project.html
-
 │── styles.css
-
 │── app.js
-
 │── server.js
-
 │── package.json
-
 │── run.bat
 
 ⚙️ Installation & Setup
