@@ -1,0 +1,9 @@
+{
+    "name": "expense-tracker-pro",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Modern expense tracker dashboard",
+    "scripts": {
+        "start": "node server.js"
+    }
+}
