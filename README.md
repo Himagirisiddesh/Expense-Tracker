@@ -1,58 +1,121 @@
-💰 Expense Tracker (₹)
+💰 Expense Tracker Pro
 
-A simple and user-friendly Expense Tracker web app built with HTML, CSS, and JavaScript to manage and monitor daily spending in Indian Rupees (₹).
-It helps users keep track of their expenses with a title, description, and amount — all stored locally in the browser.
+A modern and feature-rich **Expense Tracker Web Application** that helps users manage income and expenses with a clean UI, powerful filters, and interactive charts.
 
+🚀 Features
 
-🧾 Features
+* 📊 Dashboard with **real-time analytics**
+* 💵 Track **income & expenses**
+* 🔍 Search & filter transactions
+* 📅 Filter by **date, category, and type**
+* 📈 Interactive charts (Category & Monthly)
+* 🔐 Optional **PIN lock security**
+* 🌙 Dark / Light mode toggle
+* 📤 Export data to **CSV**
+* 💾 Data stored locally using localStorage
 
-✅ Add expenses with a Title, Description, and Amount (₹)
-✅ View all your added expenses in a clean list
-✅ Automatically updates the Total Amount
-✅ Delete any expense instantly
-✅ Data is saved using LocalStorage (persists even after refreshing the page)
-✅ 100% built with HTML, CSS, and JavaScript — no frameworks required
+🖥️ Tech Stack
 
-
-🧠 How It Works
-
-1. Enter your expense title (e.g., “Groceries”)
-2. Optionally add a description (e.g., “Bought vegetables from local market”)
-3. Enter the amount in Rupees( ₹ )
-4. Click Add Expense
-5. Your total and list update automatically!
-
-
-
-🖥️ Technologies Used
-
-1. HTML5 – Structure
-2. CSS3 – Styling
-3. JavaScript (ES6) – Logic and LocalStorage handling
-
+1.Frontend: HTML, CSS, JavaScript
+2.Backend: Node.js (Basic HTTP server) 
+3.Storage: Browser LocalStorage 
 
 📂 Project Structure
-expense-tracker/
-│
-├── index.html      # Main application file
-├── README.md       # Project documentation
-└── screenshots
-     
-
-🖼️ Screenshots
-
-**1. App Interface**
-
-![Expense Tracker Screenshot](https://misleading-green-6wmfljuk9a.edgeone.app/Screenshot%202025-10-22%20173140.png)
 
 
+expense-tracker-pro/
+│── index.html
+│── Expense Tracker Project.html
+│── styles.css
+│── app.js
+│── server.js
+│── package.json
+│── run.bat
 
-**2. After Adding Expenses**
+⚙️ Installation & Setup
 
-![Expense List Screenshot](https://victorious-indigo-h7vfzzs4w5.edgeone.app/Screenshot%202025-10-22%20174116.png)
+1️⃣ Clone the repository
+
+git clone https://github.com/your-username/expense-tracker-pro.git
+cd expense-tracker-pro
+
+
+2️⃣ Install dependencies (if needed)
+
+npm install
+
+
+### 3️⃣ Run the server
+
+npm start
+
+
+👉 This will start the app at:
+
+
+http://127.0.0.1:3000/
+
+
+📸 Screenshots
+
+🔐 Secure Login (PIN Lock) and 📊 Dashboard Overview
+<img width="1819" height="667" alt="image" src="https://github.com/user-attachments/assets/ecf0cc79-a912-4bbb-978e-80fa61eb5d24" />
+
+🧾 Transaction Ledger & Filters
+<img width="1403" height="557" alt="image" src="https://github.com/user-attachments/assets/7f3eef6c-42de-4583-80c2-c52a0f72c5cf" />
+
+
+🔐 Security Feature
+
+* Users can enable a **4-digit PIN lock**
+* Data is protected locally in browser session
+* Uses browser crypto API for hashing 
+
+
+📊 How It Works
+
+* All transactions are stored in **localStorage**
+* Automatically calculates:
+
+  * Total Income
+  * Total Expenses
+  * Balance
+  * Monthly Insights
+* Charts update dynamically based on filters
 
 
 
-📜 License
+📤 Export Feature
 
-This project is licensed under the MIT License — you’re free to use, modify, and distribute it with credit.
+* Export filtered data as .csv
+* Useful for:
+
+  * Excel analysis
+  * Reports
+  * Backup
+
+ 🌟 Future Improvements
+
+* 🔄 Cloud sync (Firebase / MongoDB)
+* 👤 User login system
+* 📱 Mobile app version
+* 📊 Advanced analytics (AI-based insights)
+
+🤝 Contributing
+
+Pull requests are welcome!
+If you have ideas, feel free to fork and improve.
+
+📄 License
+
+This project is open-source and free to use.
+
+👨‍💻 Author
+
+Himagiri Siddesh
+
+MCA Student
+Passionate about AI & Web Development
+
+
+⭐ If you like this project, give it a star on GitHub!
