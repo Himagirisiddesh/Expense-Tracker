@@ -58,23 +58,27 @@ http://127.0.0.1:3000/
 
 📸 Screenshots
 
+
 🔐 Secure Login (PIN Lock) and 📊 Dashboard Overview
+
 <img width="1819" height="667" alt="image" src="https://github.com/user-attachments/assets/ecf0cc79-a912-4bbb-978e-80fa61eb5d24" />
 
+
 🧾 Transaction Ledger & Filters
+
 <img width="1403" height="557" alt="image" src="https://github.com/user-attachments/assets/7f3eef6c-42de-4583-80c2-c52a0f72c5cf" />
 
 
 🔐 Security Feature
 
-* Users can enable a **4-digit PIN lock**
+* Users can enable a 4-digit PIN lock
 * Data is protected locally in browser session
 * Uses browser crypto API for hashing 
 
 
 📊 How It Works
 
-* All transactions are stored in **localStorage**
+* All transactions are stored in localStorage
 * Automatically calculates:
 
   * Total Income
