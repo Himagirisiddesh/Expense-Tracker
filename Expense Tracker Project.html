@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+    <div class="ambient one"></div>
+    <div class="ambient two"></div>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader glass-panel">
+            <div class="loader-ring"></div>
+            <h3>Loading your finance dashboard</h3>
+            <div class="loader-bar"></div>
+            <p>Preparing charts, summaries, and your saved data.</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="confirmModal" aria-hidden="true">
+        <div class="modal-card glass-panel">
+            <span class="eyebrow">Confirm Delete</span>
+            <h3>Delete this transaction?</h3>
+            <p id="confirmMessage">This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="confirmCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmApproveBtn">
+                    <i class="fa-solid fa-trash-can"></i>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="securityModal" aria-hidden="true">
+        <div class="modal-card glass-panel">
+            <span class="eyebrow">App Security</span>
+            <h3 id="securityTitle">Enable local app lock</h3>
+            <p id="securityDescription">Create a 4-digit PIN to require an unlock before each new browser session.</p>
+            <form id="securityForm">
+                <div class="form-grid">
+                    <div class="field field-span-2">
+                        <label for="securityPin">PIN</label>
+                        <input class="input" type="password" inputmode="numeric" maxlength="4" pattern="\d{4}" id="securityPin" placeholder="Enter 4-digit PIN" autocomplete="new-password">
+                    </div>
+                    <div class="field field-span-2" id="securityConfirmGroup">
+                        <label for="securityPinConfirm">Confirm PIN</label>
+                        <input class="input" type="password" inputmode="numeric" maxlength="4" pattern="\d{4}" id="securityPinConfirm" placeholder="Confirm 4-digit PIN" autocomplete="new-password">
+                    </div>
+                </div>
+                <p class="inline-note" id="securityHelper">This lock is stored only in this browser and is meant for lightweight local protection.</p>
+                <div class="modal-actions top-gap">
+                    <button type="button" class="btn btn-secondary" id="securityCancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="securitySubmitText">Save PIN</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="lock-overlay hidden" id="lockOverlay" aria-hidden="true">
+        <div class="modal-card glass-panel lock-card">
+            <div class="brand compact">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <span class="eyebrow">Protected Mode</span>
+                    <h2>Unlock Expense Tracker Pro</h2>
+                </div>
+            </div>
+            <p class="top-gap-sm">Enter your 4-digit PIN to access your saved transactions and charts.</p>
+            <form id="unlockForm">
+                <div class="field top-gap">
+                    <label for="unlockPin">PIN</label>
+                    <input class="input" type="password" inputmode="numeric" maxlength="4" pattern="\d{4}" id="unlockPin" placeholder="Enter PIN" autocomplete="one-time-code">
+                </div>
+                <div class="modal-actions top-gap">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-unlock"></i>
+                        Unlock App
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="app-shell">
+        <header class="topbar glass-panel">
+            <div class="brand">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <span class="eyebrow">Expense Tracker Pro</span>
+                    <h1>Finance Command Center</h1>
+                    <p>Searchable income and expense tracking with rich summaries.</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost btn-small" id="themeToggleBtn" type="button">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                    <span id="themeToggleText">Switch Theme</span>
+                </button>
+                <button class="btn btn-ghost btn-small" id="exportBtn" type="button">
+                    <i class="fa-solid fa-file-export"></i>
+                    Export CSV
+                </button>
+                <button class="btn btn-ghost btn-small" id="securityBtn" type="button">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span id="securityBtnText">Enable Lock</span>
+                </button>
+                <button class="btn btn-primary btn-small" id="lockNowBtn" type="button" hidden>
+                    <i class="fa-solid fa-lock"></i>
+                    Lock Now
+                </button>
+            </div>
+        </header>
+
+        <section class="hero glass-panel">
+            <div class="hero-copy">
+                <span class="eyebrow">Modern Dashboard Experience</span>
+                <h2>Track every rupee with clarity, speed, and a polished workflow.</h2>
+                <p>Manage income and expenses in one place, filter by category and date, search instantly, edit records anytime, and monitor monthly performance with interactive charts.</p>
+                <div class="hero-chip-row">
+                    <span class="hero-chip"><i class="fa-solid fa-bolt"></i> Fast local saves</span>
+                    <span class="hero-chip"><i class="fa-solid fa-chart-pie"></i> Live category charts</span>
+                    <span class="hero-chip"><i class="fa-solid fa-mobile-screen"></i> Responsive layout</span>
+                </div>
+            </div>
+            <div class="hero-panel">
+                <span class="eyebrow">Current Month</span>
+                <h3 id="heroMonthLabel">Month Snapshot</h3>
+                <div class="hero-metrics">
+                    <div>
+                        <span>Income</span>
+                        <strong id="heroMonthIncome">₹0</strong>
+                    </div>
+                    <div>
+                        <span>Expense</span>
+                        <strong id="heroMonthExpense">₹0</strong>
+                    </div>
+                    <div>
+                        <span>Net</span>
+                        <strong id="heroMonthNet">₹0</strong>
+                    </div>
+                </div>
+                <p id="heroInsight">Start adding transactions to build your monthly story.</p>
+                <div class="progress-block">
+                    <div class="progress-labels">
+                        <span>Expense ratio</span>
+                        <strong id="heroExpenseRatioLabel">0%</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="heroExpenseRatioBar"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card glass-panel">
+                <div class="stat-top">
+                    <div>
+                        <span>Total Income</span>
+                        <strong id="totalIncomeValue">₹0</strong>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                </div>
+                <p>All recorded income across your ledger.</p>
+            </article>
+            <article class="stat-card glass-panel">
+                <div class="stat-top">
+                    <div>
+                        <span>Total Expense</span>
+                        <strong id="totalExpenseValue">₹0</strong>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                </div>
+                <p>Every tracked outgoing payment and purchase.</p>
+            </article>
+            <article class="stat-card glass-panel">
+                <div class="stat-top">
+                    <div>
+                        <span>Balance</span>
+                        <strong id="balanceValue">₹0</strong>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                </div>
+                <p>Income minus expenses across all saved data.</p>
+            </article>
+            <article class="stat-card glass-panel">
+                <div class="stat-top">
+                    <div>
+                        <span>This Month Expense</span>
+                        <strong id="thisMonthExpenseValue">₹0</strong>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                </div>
+                <p>A quick view of current month spending velocity.</p>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <aside class="panel glass-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">Transaction Form</span>
+                        <h3 id="formTitle">Add New Record</h3>
+                    </div>
+                    <div class="pill"><i class="fa-solid fa-pen-to-square"></i></div>
+                </div>
+
+                <div class="edit-banner hidden" id="editBanner">
+                    <span><i class="fa-solid fa-pen"></i> Editing an existing transaction</span>
+                    <button type="button" class="btn btn-ghost btn-small" id="cancelEditBtn">Cancel</button>
+                </div>
+
+                <form id="entryForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="entryType">Type</label>
+                            <select id="entryType">
+                                <option value="expense">Expense</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="entryDate">Date</label>
+                            <input class="input" type="date" id="entryDate">
+                        </div>
+                        <div class="field field-span-2">
+                            <label for="entryTitle">Title</label>
+                            <input class="input" type="text" id="entryTitle" placeholder="Ex: Grocery shopping">
+                        </div>
+                        <div class="field">
+                            <label for="entryCategory">Category</label>
+                            <select id="entryCategory"></select>
+                        </div>
+                        <div class="field">
+                            <label for="entryAmount">Amount</label>
+                            <input class="input" type="number" id="entryAmount" placeholder="0.00" min="0" step="0.01">
+                        </div>
+                        <div class="field field-span-2">
+                            <label for="entryNote">Notes</label>
+                            <textarea id="entryNote" placeholder="Optional details for better context"></textarea>
+                        </div>
+                    </div>
+                    <p class="inline-note">Your data is stored in a versioned localStorage object, and older records from the previous app are migrated automatically.</p>
+                    <div class="form-actions top-gap">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa-solid fa-plus"></i>
+                            <span id="saveEntryText">Add Transaction</span>
+                        </button>
+                        <button class="btn btn-secondary" type="button" id="resetFormBtn">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </aside>
+
+            <section class="panel glass-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">Monthly Summary</span>
+                        <h3>Visual Insights</h3>
+                    </div>
+                    <div class="pill" id="recordsPill">0 records</div>
+                </div>
+
+                <div class="summary-callout">
+                    <h4 id="summaryHeadline">No monthly activity yet</h4>
+                    <p id="summarySubtext">Once you add transactions, this space will highlight how well income is covering your expenses.</p>
+                </div>
+
+                <div class="month-summary">
+                    <div class="summary-tile">
+                        <span>Month Income</span>
+                        <strong id="monthIncomeValue">₹0</strong>
+                    </div>
+                    <div class="summary-tile">
+                        <span>Month Expense</span>
+                        <strong id="monthExpenseValue">₹0</strong>
+                    </div>
+                    <div class="summary-tile">
+                        <span>Month Balance</span>
+                        <strong id="monthBalanceValue">₹0</strong>
+                    </div>
+                </div>
+
+                <div class="progress-block">
+                    <div class="progress-labels">
+                        <span>Expense ratio</span>
+                        <strong id="expenseRatioLabel">0%</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="expenseRatioBar"></div>
+                    </div>
+                </div>
+
+                <div class="chart-grid">
+                    <article class="chart-card soft-panel">
+                        <div class="chart-header">
+                            <div>
+                                <h4>Expense by Category</h4>
+                                <p>Pie chart based on your filtered expense view.</p>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <canvas id="categoryChart"></canvas>
+                            <div class="chart-placeholder hidden" id="categoryPlaceholder">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <p>No expense data for the active filters.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="chart-card soft-panel">
+                        <div class="chart-header">
+                            <div>
+                                <h4>Monthly Expenses</h4>
+                                <p>Bar chart for the last six months of expense totals.</p>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <canvas id="monthlyChart"></canvas>
+                            <div class="chart-placeholder hidden" id="monthlyPlaceholder">
+                                <i class="fa-solid fa-chart-column"></i>
+                                <p>Add expense records to see monthly spending trends.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </section>
+
+        <section class="panel glass-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">Filters & Search</span>
+                    <h3>Find transactions instantly</h3>
+                </div>
+                <button class="btn btn-ghost btn-small" type="button" id="clearFiltersBtn">
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                    Clear Filters
+                </button>
+            </div>
+
+            <div class="filters-grid">
+                <div class="field">
+                    <label for="searchInput">Search</label>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" id="searchInput" placeholder="Search title, category, or note">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="typeFilter">Type</label>
+                    <select id="typeFilter">
+                        <option value="all">All types</option>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter">
+                        <option value="all">All categories</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="startDateFilter">Start date</label>
+                    <input class="input" type="date" id="startDateFilter">
+                </div>
+                <div class="field">
+                    <label for="endDateFilter">End date</label>
+                    <input class="input" type="date" id="endDateFilter">
+                </div>
+            </div>
+
+            <div class="filter-actions top-gap-sm">
+                <p id="filterSummary">Showing all saved transactions.</p>
+                <div class="pill" id="visibleCountPill">0 visible</div>
+            </div>
+        </section>
+
+        <section class="panel glass-panel ledger-panel">
+            <div class="ledger-toolbar">
+                <div>
+                    <span class="eyebrow">Transaction Ledger</span>
+                    <h3>Recent activity</h3>
+                </div>
+                <div class="pill" id="netFlowPill">Net ₹0</div>
+            </div>
+
+            <div class="empty-state hidden" id="emptyState">
+                <i class="fa-regular fa-folder-open"></i>
+                <h4 id="emptyStateTitle">No transactions yet</h4>
+                <p id="emptyStateMessage">Add your first income or expense to start building your dashboard.</p>
+            </div>
+
+            <div class="entries-list" id="entriesList"></div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
